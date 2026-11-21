@@ -1,0 +1,7 @@
+(function(V){
+V.clock=n=>{n=Math.max(0,Math.ceil(n));return Math.floor(n/60)+':'+String(n%60).padStart(2,'0');};
+V.header=()=>'<header class="masthead"><div class="brand"><b>⚓</b> VELMARIS <span class="edition">&nbsp; / &nbsp; POSTCARDS FROM THE COAST</span></div><div class="eyebrow">A little closer. A little different.</div></header>';
+V.footer=()=>'<footer><span>THE VELMARIS POSTCARD SOCIETY</span><span>THREE PLACES. THIRTY LITTLE SECRETS.</span></footer>';
+V.updateHud=function(){let s=V.state;let count=document.querySelector('.count');if(!count)return;count.textContent=(10-s.found.size)+' to find';document.querySelector('.time-text').textContent=V.clock(s.remaining);document.querySelector('.fill').style.width=(s.remaining/V.scenes[s.scene].time*100)+'%';document.querySelector('.timer').classList.toggle('danger',s.remaining<30);document.querySelector('.toast').textContent=s.message||'Take your time. The smallest details tell a story.';document.querySelector('.score').textContent='SCORE  '+s.score.toLocaleString();};
+V.rings=function(){document.querySelectorAll('.ring').forEach(x=>x.remove());let s=V.state;V.scenes[s.scene].differences.forEach((d,i)=>{if(!s.found.has(i)&&s.hint!==i)return;document.querySelectorAll('.painting').forEach(p=>{let r=document.createElement('span');r.className='ring'+(!s.found.has(i)?' hint-ring':'');r.style.cssText=`left:${d.x/560*100}%;top:${d.y/440*100}%;width:${d.r*2/560*100}%;height:${d.r*2/440*100}%`;p.append(r);});});};
+})(Velmaris);
